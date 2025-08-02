@@ -1,11 +1,11 @@
 {
-  "name": "cdk-container-cluster",
+  "name": "cdk-cluster",
   "version": "0.1.0",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w",
     "test": "jest"
   },
   "devDependencies": {

@@ -1,12 +1,14 @@
-# Welcome to your CDK TypeScript Construct Library project
+# cdk-cluster
 
-You should explore the contents of this project. It demonstrates a CDK Construct Library that includes a construct (`CdkContainerCluster`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+CDK Constructs to simplify running containers in an ECS Cluster.  Optimized for web apps built with popular frameworks, such as:
 
-The construct defines an interface (`CdkContainerClusterProps`) to configure the visibility timeout of the queue.
+- Ruby on Rails
+- Django
+- Next.js
 
 ## Useful commands
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
+* `yarn build`           compile typescript to js
+* `yarn build --watch`   watch for changes and compile
+* `yarn test`            perform the jest unit tests
+* `yarn test --watch`    watch for changes and run tests
