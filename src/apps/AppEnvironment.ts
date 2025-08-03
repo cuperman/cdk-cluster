@@ -6,6 +6,7 @@ export interface RegionalEnvironment {
 }
 
 export interface AppEnvironmentProps extends cdk.AppProps {
+  readonly name: string;
   readonly account: string;
   readonly regions: string[];
   readonly defaults?: RegionalEnvironment;
@@ -17,7 +18,7 @@ export class AppEnvironment extends cdk.App {
     super(props);
 
     props.regions.forEach((region) => {
-      new AppNetworkStack(this, `AppNetwork-${region}`, {
+      new AppNetworkStack(this, `${props.name}-AppNetwork-${region}`, {
         env: {
           account: props.account,
           region,

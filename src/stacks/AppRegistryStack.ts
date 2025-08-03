@@ -11,8 +11,10 @@ export class AppRegistryStack extends AppStack {
   constructor(scope: Construct, id: string, props: AppRegistryStackProps) {
     super(scope, id, props);
 
-    props.imageNames.forEach((imageName) => {
-      new ecr.Repository(this, `Repo/${imageName}`, {
+    props.imageNames.forEach((imageName, index) => {
+      const sequence = index + 1;
+
+      new ecr.Repository(this, `Repo-${sequence}`, {
         repositoryName: imageName,
       });
     });

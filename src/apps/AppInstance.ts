@@ -6,6 +6,7 @@ export interface RegionalInstance {
 }
 
 export interface AppInstanceProps extends cdk.AppProps {
+  readonly name: string;
   readonly account: string;
   readonly regions: string[];
   readonly defaults: RegionalInstance;
@@ -17,7 +18,7 @@ export class AppInstance extends cdk.App {
     super(props);
 
     props.regions.forEach((region) => {
-      new AppRegistryStack(this, `AppRegistry-${region}`, {
+      new AppRegistryStack(this, `${props.name}-AppRegistry-${region}`, {
         env: {
           account: props.account,
           region,
