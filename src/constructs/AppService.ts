@@ -81,6 +81,8 @@ export class AppService extends Construct {
       serviceName: props.serviceName,
       taskDefinition,
       minHealthyPercent: 100, // See https://github.com/aws/aws-cdk/issues/31705
+      propagateTags: ecs.PropagatedTagSource.TASK_DEFINITION,
+      enableECSManagedTags: true,
     });
   }
 
