@@ -10,7 +10,7 @@ import {
 
 export interface RegionalInstance {
   readonly registry: AppRegistryStackProps;
-  readonly documentDatabase: AppDocumentDatabaseStackProps;
+  readonly documentDatabase?: AppDocumentDatabaseStackProps;
   readonly cluster: AppClusterStackProps;
 }
 
@@ -27,17 +27,19 @@ export class AppInstance extends cdk.App {
   constructor(props: AppInstanceProps) {
     super(props);
 
-    const documentDatabaseStack = new AppDocumentDatabaseStack(
-      this,
-      `${props.name}-AppDocumentDatabase-global`,
-      {
-        env: {
-          account: props.account,
-          region: props.primaryRegion,
-        },
-        ...props.defaults.documentDatabase,
-      }
-    );
+    const documentDatabaseStack = props.defaults.documentDatabase
+      ? new AppDocumentDatabaseStack(
+          this,
+          `${props.name}-AppDocumentDatabase-global`,
+          {
+            env: {
+              account: props.account,
+              region: props.primaryRegion,
+            },
+            ...props.defaults.documentDatabase,
+          }
+        )
+      : undefined;
 
     props.regions.forEach((region) => {
       new AppRegistryStack(this, `${props.name}-AppRegistry-${region}`, {
@@ -54,7 +56,7 @@ export class AppInstance extends cdk.App {
           account: props.account,
           region,
         },
-        documentDatabaseSecret: documentDatabaseStack.secret,
+        documentDatabaseSecret: documentDatabaseStack?.secret,
         ...props.defaults.cluster,
         ...props.regional?.[region]?.cluster,
       });
