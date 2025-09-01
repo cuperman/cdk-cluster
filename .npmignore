@@ -1,5 +1,6 @@
 *.ts
 !*.d.ts
+tsconfig.json
 
 # CDK asset staging directory
 .cdk.staging
