@@ -4,6 +4,7 @@ import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as logs from "aws-cdk-lib/aws-logs";
 import * as elbv2 from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
+import * as iam from "aws-cdk-lib/aws-iam";
 
 export interface AppImageDefinition {
   readonly imageName: string;
@@ -33,6 +34,7 @@ export interface AppServiceProps {
     readonly secret?: secretsmanager.ISecret;
     readonly environmentVariables?: { [key: string]: string };
   };
+  readonly taskRoleStatements?: iam.PolicyStatement[];
 }
 
 export class AppService extends Construct {
@@ -56,6 +58,12 @@ export class AppService extends Construct {
         memoryLimitMiB: props.memory,
       }
     );
+
+    if (props.taskRoleStatements) {
+      for (const statement of props.taskRoleStatements) {
+        taskDefinition.addToTaskRolePolicy(statement);
+      }
+    }
 
     const logGroup = new logs.LogGroup(this, "LogGroup", props.logging);
 
