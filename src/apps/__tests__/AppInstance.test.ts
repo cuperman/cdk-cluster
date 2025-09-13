@@ -8,9 +8,6 @@ describe("AppInstance", () => {
     regions: ["us-east-1", "us-west-2"],
     primaryRegion: "us-east-1",
     defaults: {
-      registry: {
-        imageNames: ["my-image-1", "my-image-2"],
-      },
       documentDatabase: {
         vpc: {
           vpcName: "MyVpcName",
@@ -56,11 +53,6 @@ describe("AppInstance", () => {
     assembly.stacks.forEach((stack) => {
       expect(stack.stackName).toMatch(/^MyInstance-.*/);
     });
-  });
-
-  it("should create registry stacks in each region", () => {
-    expect(stackNames).toContain("MyInstance-AppRegistry-us-east-1");
-    expect(stackNames).toContain("MyInstance-AppRegistry-us-west-2");
   });
 
   it("should create cluster stacks in each region", () => {
