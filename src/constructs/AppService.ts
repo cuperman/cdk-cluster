@@ -8,7 +8,7 @@ import * as iam from "aws-cdk-lib/aws-iam";
 
 export interface AppImageDefinition {
   readonly imageName: string;
-  readonly imageTag: string;
+  readonly imageTag?: string;
 }
 
 export interface AppServiceTarget {
