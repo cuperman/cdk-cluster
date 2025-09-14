@@ -84,6 +84,14 @@ export class AppService extends Construct {
       ),
     });
 
+    // Support for ECR pull-through cache
+    taskDefinition.addToExecutionRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ecr:CreateRepository", "ecr:BatchImportUpstreamImage"],
+        resources: [image.repositoryArn],
+      })
+    );
+
     this.fargateService = new ecs.FargateService(this, "Service", {
       cluster: props.cluster,
       serviceName: props.serviceName,
