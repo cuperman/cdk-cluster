@@ -8,7 +8,7 @@ import * as iam from "aws-cdk-lib/aws-iam";
 
 export interface AppImageDefinition {
   readonly imageName: string;
-  readonly imageTag: string;
+  readonly imageTag?: string;
 }
 
 export interface AppServiceTarget {
@@ -83,6 +83,14 @@ export class AppService extends Construct {
         props.documentDatabaseSecrets?.environmentVariables
       ),
     });
+
+    // Support for ECR pull-through cache
+    taskDefinition.addToExecutionRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ecr:CreateRepository", "ecr:BatchImportUpstreamImage"],
+        resources: [image.repositoryArn],
+      })
+    );
 
     this.fargateService = new ecs.FargateService(this, "Service", {
       cluster: props.cluster,

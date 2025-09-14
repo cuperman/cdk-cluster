@@ -1,7 +1,5 @@
 import * as cdk from "aws-cdk-lib";
 import {
-  AppRegistryStack,
-  AppRegistryStackProps,
   AppClusterStack,
   AppClusterStackProps,
   AppDocumentDatabaseStackProps,
@@ -9,7 +7,6 @@ import {
 } from "../stacks";
 
 export interface RegionalInstance {
-  readonly registry: AppRegistryStackProps;
   readonly documentDatabase?: AppDocumentDatabaseStackProps;
   readonly cluster: AppClusterStackProps;
 }
@@ -42,15 +39,6 @@ export class AppInstance extends cdk.App {
       : undefined;
 
     props.regions.forEach((region) => {
-      new AppRegistryStack(this, `${props.name}-AppRegistry-${region}`, {
-        env: {
-          account: props.account,
-          region,
-        },
-        ...props.defaults.registry,
-        ...props.regional?.[region]?.registry,
-      });
-
       new AppClusterStack(this, `${props.name}-AppCluster-${region}`, {
         env: {
           account: props.account,
