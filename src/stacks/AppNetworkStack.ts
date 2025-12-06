@@ -11,6 +11,9 @@ export class AppNetworkStack extends AppStack {
   constructor(scope: Construct, id: string, props?: AppNetworkStackProps) {
     super(scope, id, props);
 
-    new ec2.Vpc(this, "Vpc", props?.vpc);
+    new ec2.Vpc(this, "Vpc", {
+      ipProtocol: ec2.IpProtocol.DUAL_STACK,
+      ...props?.vpc,
+    });
   }
 }
