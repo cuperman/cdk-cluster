@@ -34,6 +34,11 @@ jobs:
         run: yarn build
 
       - name: Publish to GitHub Packages
-        run: yarn publish
+        run: |
+          if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+            yarn publish --tag next
+          else
+            yarn publish --tag latest
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
