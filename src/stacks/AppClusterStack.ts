@@ -34,6 +34,12 @@ export class AppClusterStack extends AppStack {
 
     // load balancer
 
+    const securityGroup = new ec2.SecurityGroup(this, "SecurityGroup", {
+      vpc,
+      allowAllOutbound: true,
+      allowAllIpv6Outbound: true,
+    });
+
     const loadBalancer = new AppLoadBalancer(this, "LoadBalancer", {
       vpc,
       dns: {
@@ -42,6 +48,8 @@ export class AppClusterStack extends AppStack {
         ssl: true,
       },
       internetFacing: true,
+      ipAddressType: elbv2.IpAddressType.DUAL_STACK,
+      securityGroup,
     });
 
     // services
@@ -74,6 +82,7 @@ export class AppClusterStack extends AppStack {
             port: target.containerPort,
             protocol: elbv2.ApplicationProtocol.HTTP,
             healthCheck: target.healthCheck,
+            ipAddressType: target.ipAddressType,
           }
         );
 
